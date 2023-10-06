@@ -6,7 +6,7 @@ import { JSDOM } from 'jsdom';
 import Epub from 'epub-gen';
 
 const url = process.argv[2];
-const outupt = process.argv[2];
+const output = process.argv[3];
 
 const css = fs.readFileSync('./css/style.css');
 
@@ -19,9 +19,10 @@ const request = http.request(url, (res) => {
         const doc = new JSDOM(data);
         const reader = new Readability(doc.window.document);
         const article = reader.parse();
-        article.content = [{ title: article.title, data: article.content }];
+        article.content = [{ title: article.title, data: article.content, beforeToc: true }];
         article.css = css;
-        new Epub(article, outupt).promise.then(
+        article.verbose = true;
+        new Epub(article, output).promise.then(
             () => console.log('Ebook Generated Successfully!'),
             (err) => console.error('Failed to generate Ebook because of ', err),
         );
