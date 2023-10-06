@@ -7,6 +7,9 @@
     "lint": "eslint .  --ext .js",
     "lint-fix": "eslint --fix .  --ext .js"
   },
+  "engines": {
+    "node": ">=8.3.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/marciotojr/article-to-epub.git"
