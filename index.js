@@ -3,9 +3,10 @@ import fs from 'fs';
 
 import { Readability } from '@mozilla/readability';
 import { JSDOM } from 'jsdom';
-import { EPub } from '@lesjoursfr/html-to-epub';
+import Epub from 'epub-gen';
 
 const url = process.argv[2];
+const outupt = process.argv[2];
 
 const css = fs.readFileSync('./css/style.css');
 
@@ -20,14 +21,10 @@ const request = http.request(url, (res) => {
         const article = reader.parse();
         article.content = [{ title: article.title, data: article.content }];
         article.css = css;
-        const epub = new EPub(article, '/mnt/e/output.epub');
-        epub.render()
-            .then(() => {
-                console.log('Ebook Generated Successfully!');
-            })
-            .catch((err) => {
-                console.error('Failed to generate Ebook because of ', err);
-            });
+        new Epub(article, outupt).promise.then(
+            () => console.log('Ebook Generated Successfully!'),
+            (err) => console.error('Failed to generate Ebook because of ', err),
+        );
     });
 });
 request.on('error', (e) => {

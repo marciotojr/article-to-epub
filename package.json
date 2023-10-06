@@ -23,7 +23,6 @@
   },
   "homepage": "https://github.com/marciotojr/article-to-epub#readme",
   "dependencies": {
-    "@lesjoursfr/html-to-epub": "^4.1.1",
     "@mozilla/readability": "^0.4.4",
     "epub-gen": "^0.1.0",
     "jsdom": "^22.1.0"
