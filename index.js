@@ -11,24 +11,39 @@ const output = process.argv[3];
 const css = fs.readFileSync('./css/style.css');
 
 const request = http.request(url, (res) => {
-    let data = '';
+    let html = '';
     res.on('data', (chunk) => {
-        data += chunk;
+        html += chunk;
     });
     res.on('end', () => {
-        const doc = new JSDOM(data);
-        const reader = new Readability(doc.window.document);
-        const article = reader.parse();
-        article.content = [{ title: article.title, data: article.content, beforeToc: true }];
-        article.css = css;
-        article.verbose = true;
-        new Epub(article, output).promise.then(
-            () => console.log('Ebook Generated Successfully!'),
-            (err) => console.error('Failed to generate Ebook because of ', err),
-        );
+        generateEpub(html);
     });
 });
 request.on('error', (e) => {
     console.log(e.message);
 });
 request.end();
+
+const generateEpub = (html) => {
+    const article = extractArticle(html);
+    const option = {
+        ...article,
+        content: [{ title: article.title, data: article.content, beforeToc: true }],
+        css
+    }
+    renderEpub(option,output);
+}
+
+const extractArticle = (data) => {
+    const doc = new JSDOM(data);
+    const reader = new Readability(doc.window.document);
+    return reader.parse();
+}
+
+const renderEpub = (option, output) => {
+    console.log(option);
+    new Epub(option, output).promise.then(
+        () => console.log('Ebook Generated Successfully!'),
+        (err) => console.error('Failed to generate Ebook because of ', err),
+    );
+}
