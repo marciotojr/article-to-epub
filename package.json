@@ -28,7 +28,8 @@
   "dependencies": {
     "@mozilla/readability": "^0.4.4",
     "epub-gen": "^0.1.0",
-    "jsdom": "^22.1.0"
+    "jsdom": "^22.1.0",
+    "open-graph-scraper": "^6.3.0"
   },
   "type": "module",
   "devDependencies": {
