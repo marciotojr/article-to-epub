@@ -17,7 +17,6 @@ const extractArticle = (data) => {
 };
 
 const renderEpub = (option) => {
-    console.log(option);
     new Epub(option, output).promise.then(
         () => console.log('Ebook Generated Successfully!'),
         (err) => console.error('Failed to generate Ebook because of ', err),
@@ -31,6 +30,8 @@ const generateEpub = (html) => {
         content: [
             { title: article.title, data: article.content, beforeToc: true },
         ],
+        author: article.byline,
+        publisher: article.siteName,
         css,
     };
     renderEpub(option, output);
